@@ -10,9 +10,9 @@ const RequestClin = require('../../models/request-clin')
 const Patient = require('../../models/patient')
 
 /**
- * @api {get} https://virtualhubukraine.azurewebsites.net/api/langs/ Get languages
+ * @api {get} https://ayudamosvalencia.com/api/langs/ Get languages
  * @apiName getLangs
- * @apiDescription This method return the languages available in Rare Diseases Hub Ukraine. you get a list of languages, and for each one you have the name and the code.
+ * @apiDescription This method return the languages available in AyudamosValencia. you get a list of languages, and for each one you have the name and the code.
  * We currently have 5 languages, but we will include more. The current languages are:
  * * English: en
  * * Spanish: es
@@ -22,7 +22,7 @@ const Patient = require('../../models/patient')
  * @apiGroup Languages
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
- *   this.http.get('https://virtualhubukraine.azurewebsites.net/api/langs)
+ *   this.http.get('https://ayudamosvalencia.com/api/langs)
  *    .subscribe( (res : any) => {
  *      console.log('languages: '+ res.listLangs);
  *     }, (err) => {

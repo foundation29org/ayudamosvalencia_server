@@ -21,7 +21,7 @@ function sendMsgSupport(req, res){
 		if (user){
 
 			let support = new Support()
-			support.platform = 'Relief Ukraine'
+			support.platform = 'AyudamosValencia'
 			support.type = req.body.type
 			support.subject = req.body.subject
 			support.description = req.body.description
@@ -94,8 +94,8 @@ function getPatient(userId) {
 function sendMsgLogoutSupport(req, res){
 			let support = new Support()
 			//support.type = 'Home form'
-			support.subject = 'Rare Diseases Hub Ukraine support'
-			support.platform = 'Relief Ukraine'
+			support.subject = 'AyudamosValencia support'
+			support.platform = 'AyudamosValencia'
 			support.description = 'Name: '+req.body.userName+', Email: '+ req.body.email+ ', Description: ' +req.body.description
 			support.createdBy = "5c77d0492f45d6006c142ab3";
 			support.files = []
@@ -126,7 +126,7 @@ function getUserMsgs(req, res){
 			var listmsgs = [];
 
 			msgs.forEach(function(u) {
-				if(u.platform == 'Relief Ukraine' || u.platform == undefined){
+				if(u.platform == 'AyudamosValencia' || u.platform == undefined){
 					listmsgs.push({subject:u.subject, description: u.description, date: u.date, status: u.status, type: u.type});
 				}
 			});
@@ -144,7 +144,7 @@ function getAllMsgs(req, res){
 		if(!user) return res.status(404).send({code: 208, message: 'The user does not exist'})
 
 		if(user.role == 'SuperAdmin'){
-			Support.find({platform: 'Relief Ukraine'},(err, msgs) => {
+			Support.find({platform: 'AyudamosValencia'},(err, msgs) => {
 
 					if (err) return res.status(500).send({message: `Error making the request: ${err}`})
 

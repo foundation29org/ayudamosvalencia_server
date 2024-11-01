@@ -10,13 +10,13 @@ const serviceSalesForce = require('../../services/salesForce')
 const config = require('../../config')
 
 /**
- * @api {get} https://virtualhubukraine.azurewebsites.net/api/patients-all/:userId Get patient list of a user
+ * @api {get} https://ayudamosvalencia.com/api/patients-all/:userId Get patient list of a user
  * @apiName getPatientsUser
  * @apiDescription This method read the patient list of a user. For each patient you have, you will get: patientId, name, and last name.
  * @apiGroup Patients
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
- *   this.http.get('https://virtualhubukraine.azurewebsites.net/api/patients-all/'+userId)
+ *   this.http.get('https://ayudamosvalencia.com/api/patients-all/'+userId)
  *    .subscribe( (res : any) => {
  *      console.log('patient list: '+ res.listpatients);
  *      if(res.listpatients.length>0){
@@ -102,13 +102,13 @@ function getPatientsUser (req, res){
 
 
 /**
- * @api {get} https://virtualhubukraine.azurewebsites.net/api/patients/:patientId Get patient
+ * @api {get} https://ayudamosvalencia.com/api/patients/:patientId Get patient
  * @apiName getPatient
  * @apiDescription This method read data of a Patient
  * @apiGroup Patients
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
- *   this.http.get('https://virtualhubukraine.azurewebsites.net/api/patients/'+patientId)
+ *   this.http.get('https://ayudamosvalencia.com/api/patients/'+patientId)
  *    .subscribe( (res : any) => {
  *      console.log('patient info: '+ res.patient);
  *     }, (err) => {
@@ -174,14 +174,14 @@ function getPatient (req, res){
 }
 
 /**
- * @api {put} https://virtualhubukraine.azurewebsites.net/api/patients/:patientId Update Patient
+ * @api {put} https://ayudamosvalencia.com/api/patients/:patientId Update Patient
  * @apiName updatePatient
  * @apiDescription This method allows to change the data of a patient.
  * @apiGroup Patients
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
  *   var patient = {patientName: '', surname: '', street: '', postalCode: '', citybirth: '', provincebirth: '', countrybirth: null, city: '', province: '', country: null, phone1: '', phone2: '', birthDate: null, gender: null, siblings: [], parents: []};
- *   this.http.put('https://virtualhubukraine.azurewebsites.net/api/patients/'+patientId, patient)
+ *   this.http.put('https://ayudamosvalencia.com/api/patients/'+patientId, patient)
  *    .subscribe( (res : any) => {
  *      console.log('patient info: '+ res.patientInfo);
  *     }, (err) => {
@@ -306,14 +306,14 @@ function getStatus (req, res){
 }
 
 /**
- * @api {put} https://virtualhubukraine.azurewebsites.net/api/patient/status/:patientId Update Status
+ * @api {put} https://ayudamosvalencia.com/api/patient/status/:patientId Update Status
  * @apiName updatePatientStatus
  * @apiDescription This method allows to change the data of a patient.
  * @apiGroup Patients
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
  *   var data = {status: 'ontheway'};
- *   this.http.put('https://virtualhubukraine.azurewebsites.net/api/patient/status/'+patientId, data)
+ *   this.http.put('https://ayudamosvalencia.com/api/patient/status/'+patientId, data)
  *    .subscribe( (res : any) => {
  *      console.log('Message: '+ res.message);
  *     }, (err) => {

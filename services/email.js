@@ -19,11 +19,11 @@ var options = {
 
 function sendMailVerifyEmail (email, userName, randomstring, lang, group){
 
-  var subjectlang='Rare Diseases Hub Ukraine - Activate the account';
+  var subjectlang='AyudamosValencia - Activate the account';
   if(lang=='es'){
-    subjectlang='Rare Diseases Hub Ukraine - Activa la cuenta';
+    subjectlang='AyudamosValencia - Activa la cuenta';
   }else if(lang=='uk'){
-    subjectlang='Rare Diseases Hub Ukraine - Активуйте обліковий запис';
+    subjectlang='AyudamosValencia - Активуйте обліковий запис';
   }
   const decoded = new Promise((resolve, reject) => {
     var maillistbcc = [
@@ -73,7 +73,7 @@ function sendMailFailSend (email){
       to: emailToFinal,
       from: TRANSPORTER_OPTIONS.auth.user,
       bcc: maillistbcc,
-      subject: 'Message for support. Fail email Rare Diseases Hub Ukraine: '+ email,
+      subject: 'Message for support. Fail email AyudamosValencia: '+ email,
       template: 'mail_support/fail',
       context: {
         email : email
@@ -92,11 +92,11 @@ function sendMailFailSend (email){
 }
 
 function sendMailRecoverPass (email, userName, randomstring, lang){
-  var subjectlang='Rare Diseases Hub Ukraine - Account Recovery';
+  var subjectlang='AyudamosValencia - Account Recovery';
   if(lang=='es'){
-    subjectlang='Rare Diseases Hub Ukraine - Recuperación de la cuenta';
+    subjectlang='AyudamosValencia - Recuperación de la cuenta';
   }else if(lang=='uk'){
-    subjectlang='Rare Diseases Hub Ukraine - Відновлення облікового запису';
+    subjectlang='AyudamosValencia - Відновлення облікового запису';
   }
   const decoded = new Promise((resolve, reject) => {
 
@@ -152,7 +152,7 @@ function sendMailSupport (email, lang, role, supportStored, emailTo){
       to: emailToFinal,
       from: TRANSPORTER_OPTIONS.auth.user,
       bcc: maillistbcc,
-      subject: 'Message for support. Rare Diseases Hub Ukraine Id: '+ supportStored._id,
+      subject: 'Message for support. AyudamosValencia Id: '+ supportStored._id,
       template: 'mail_support/_en',
       context: {
         email : email,

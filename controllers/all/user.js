@@ -43,14 +43,14 @@ function activateUser(req, res) {
 
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/api/recoverpass Request password change
+ * @api {post} https://ayudamosvalencia.com/api/api/recoverpass Request password change
  * @apiName recoverPass
  * @apiVersion 1.0.0
  * @apiGroup Account
  * @apiDescription This method allows you to send a request to change the password. At the end of this call, you need to check the email account to call [update password](#api-Account-updatePass).
  * @apiExample {js} Example usage:
  *   var formValue = { email: "example@ex.com"};
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/recoverpass',formValue)
+ *   this.http.post('https://ayudamosvalencia.com/api/recoverpass',formValue)
  *    .subscribe( (res : any) => {
  *      if(res.message == "Email sent"){
  *        console.log("Account recovery email sent. Check the email to change the password");
@@ -118,7 +118,7 @@ function recoverPass(req, res) {
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/api/updatepass Update password
+ * @api {post} https://ayudamosvalencia.com/api/api/updatepass Update password
  * @apiName updatePass
  * @apiVersion 1.0.0
  * @apiGroup Account
@@ -127,7 +127,7 @@ function recoverPass(req, res) {
  *  var passwordsha512 = sha512("fjie76?vDh");
  *  var param = this.router.parseUrl(this.router.url).queryParams;
  *  var formValue = { email: param.email, password: passwordsha512, randomCodeRecoverPass: param.key };
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/updatepass',formValue)
+ *   this.http.post('https://ayudamosvalencia.com/api/updatepass',formValue)
  *    .subscribe( (res : any) => {
  *      if(res.message == "password changed"){
  *        console.log("Password changed successfully");
@@ -236,7 +236,7 @@ function updatePass(req, res) {
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/api/newPass New password
+ * @api {post} https://ayudamosvalencia.com/api/api/newPass New password
  * @apiName newPass
  * @apiVersion 1.0.0
  * @apiGroup Account
@@ -245,7 +245,7 @@ function updatePass(req, res) {
  *  var passwordsha512 = sha512("fjie76?vDh");
  *  var newpasswordsha512 = sha512("jisd?87Tg");
  *  var formValue = { email: example@ex.com, actualpassword: passwordsha512, newpassword: newpasswordsha512 };
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/newPass',formValue)
+ *   this.http.post('https://ayudamosvalencia.com/api/newPass',formValue)
  *    .subscribe( (res : any) => {
  *      if(res.message == "password changed"){
  *        console.log("Password changed successfully");
@@ -357,15 +357,15 @@ function newPass(req, res) {
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/api/signUp New account
+ * @api {post} https://ayudamosvalencia.com/api/api/signUp New account
  * @apiName signUp
  * @apiVersion 1.0.0
  * @apiGroup Account
- * @apiDescription This method allows you to create a user account in Rare Diseases Hub Ukraine
+ * @apiDescription This method allows you to create a user account in AyudamosValencia
  * @apiExample {js} Example usage:
  *  var passwordsha512 = sha512("fjie76?vDh");
  *  var formValue = { email: "example@ex.com", userName: "Peter", password: passwordsha512, lang: "en", group: "None"};
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/signup',formValue)
+ *   this.http.post('https://ayudamosvalencia.com/api/signup',formValue)
  *    .subscribe( (res : any) => {
  *      if(res.message == "Account created"){
  *        console.log("Check the email to activate the account");
@@ -442,7 +442,7 @@ function signUp(req, res) {
 					lang: req.body.lang,
 					group: req.body.group,
 					permissions: req.body.permissions,
-					platform: 'Relief Ukraine'
+					platform: 'AyudamosValencia'
 				})
 				User.findOne({ 'email': req.body.email }, function (err, user2) {
 					if (err) return res.status(500).send({ message: `Error creating the user: ${err}` })
@@ -606,7 +606,7 @@ function sendEmail(req, res) {
 	})
 }
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/api/signin Get the token (and the userId)
+ * @api {post} https://ayudamosvalencia.com/api/api/signin Get the token (and the userId)
  * @apiName signIn
  * @apiVersion 1.0.0
  * @apiGroup Access token
@@ -615,7 +615,7 @@ function sendEmail(req, res) {
  * @apiExample {js} Example usage:
  *  var passwordsha512 = sha512("fjie76?vDh");
  *  var formValue = { email: "aa@aa.com", password: passwordsha512 };
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/signin',formValue)
+ *   this.http.post('https://ayudamosvalencia.com/api/signin',formValue)
  *    .subscribe( (res : any) => {
  *      if(res.message == "You have successfully logged in"){
  *        console.log(res.lang);
@@ -724,13 +724,13 @@ function signIn(req, res) {
 
 
 /**
- * @api {get} https://virtualhubukraine.azurewebsites.net/api/users/:id Get user
+ * @api {get} https://ayudamosvalencia.com/api/users/:id Get user
  * @apiName getUser
  * @apiVersion 1.0.0
  * @apiGroup Users
  * @apiDescription This methods read data of a User
  * @apiExample {js} Example usage:
- *   this.http.get('https://virtualhubukraine.azurewebsites.net/api/users/'+userId)
+ *   this.http.get('https://ayudamosvalencia.com/api/users/'+userId)
  *    .subscribe( (res : any) => {
  *      console.log(res.userName);
  *   }, (err) => {
@@ -792,13 +792,13 @@ function getSettings(req, res) {
 
 
 /**
- * @api {put} https://virtualhubukraine.azurewebsites.net/api/users/:id Update user
+ * @api {put} https://ayudamosvalencia.com/api/users/:id Update user
  * @apiName updateUser
  * @apiVersion 1.0.0
  * @apiDescription This method allows to change the user's data
  * @apiGroup Users
  * @apiExample {js} Example usage:
- *   this.http.put('https://virtualhubukraine.azurewebsites.net/api/users/'+userId, this.user)
+ *   this.http.put('https://ayudamosvalencia.com/api/users/'+userId, this.user)
  *    .subscribe( (res : any) => {
  *      console.log('User update: '+ res.user);
  *     }, (err) => {
