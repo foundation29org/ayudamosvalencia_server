@@ -31,7 +31,8 @@ const api = express.Router()
 //routes for login-logout
 
 api.post('/needs', needsCtrl.createNeed)
-api.get('/needs', needsCtrl.getAllNeeds)
+api.get('/needs', needsCtrl.getAllNeedsForHeatmap)
+api.get('/needs/complete',auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsComplete)
 
 api.post('/signup', userCtrl.signUp)
 api.post('/signin', userCtrl.signIn)

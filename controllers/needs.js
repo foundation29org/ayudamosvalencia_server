@@ -44,7 +44,7 @@ const createNeed = async (req, res) => {
     }
 };
 
-const getAllNeeds = async (req, res) => {
+const getAllNeedsComplete = async (req, res) => {
     try {
         // Obtener todas las necesidades
         // Puedes añadir .sort({ timestamp: -1 }) si quieres ordenar por fecha descendente
@@ -66,7 +66,37 @@ const getAllNeeds = async (req, res) => {
     }
 };
 
+const getAllNeedsForHeatmap = async (req, res) => {
+    try {
+        const needs = await Need.find({});
+        
+        // Transformamos los datos antes de enviarlos
+        const sanitizedNeeds = needs.map(need => ({
+            needs: need.needs,
+            location: need.location,
+            timestamp: need.timestamp,
+            _id: need._id,
+            otherNeeds: need.otherNeeds ? '[Contenido privado]' : ''
+        }));
+
+        res.status(200).json({
+            success: true,
+            data: sanitizedNeeds,
+            count: needs.length
+        });
+
+    } catch (error) {
+        console.error('Error al obtener necesidades:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las necesidades',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     createNeed,
-    getAllNeeds
+    getAllNeedsComplete,
+    getAllNeedsForHeatmap
 }; 
