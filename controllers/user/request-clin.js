@@ -249,14 +249,14 @@ function deleteRequest (req, res){
 
 
 /**
- * @api {put} https://virtualhubukraine.azurewebsites.net/api/requestclin/status/:requestId Update Status
+ * @api {put} https://ayudamosvalencia.com/api/requestclin/status/:requestId Update Status
  * @apiName updateclinicianStatus
  * @apiDescription This method allows to change the data of a clinician case.
  * @apiGroup Clinicals
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
  *   var data = {status: 'ontheway'};
- *   this.http.put('https://virtualhubukraine.azurewebsites.net/api/requestclin/status/'+requestId, data)
+ *   this.http.put('https://ayudamosvalencia.com/api/requestclin/status/'+requestId, data)
  *    .subscribe( (res : any) => {
  *      console.log('Message: '+ res.message);
  *     }, (err) => {

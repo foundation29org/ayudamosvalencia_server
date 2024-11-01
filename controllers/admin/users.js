@@ -11,7 +11,7 @@ const crypt = require('../../services/crypt')
 
 
 /**
- * @api {get} https://virtualhubukraine.azurewebsites.net/api/admin/users/ Request list of users of the group.
+ * @api {get} https://ayudamosvalencia.com/api/admin/users/ Request list of users of the group.
  * @apiName getUsers
  * @apiPrivate
  * @apiDescription This method request the list of users of the group.
@@ -19,7 +19,7 @@ const crypt = require('../../services/crypt')
  * @apiVersion 1.0.0
  * @apiExample {js} Example usage:
  *   var param = <group_name>
- *   this.http.get('https://virtualhubukraine.azurewebsites.net/api/admin/users/'+param)
+ *   this.http.get('https://ayudamosvalencia.com/api/admin/users/'+param)
  *    .subscribe( (res : any) => {
  *      console.log('Get list of the users of the group ok');
  *     }, (err) => {
@@ -257,7 +257,7 @@ function getsMsg(userId) {
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/admin/patients/ Set patient dead
+ * @api {post} https://ayudamosvalencia.com/api/admin/patients/ Set patient dead
  * @apiPrivate
  * @apiName setDeadPatient
  * @apiDescription This method set the value of dead for a patient.
@@ -266,7 +266,7 @@ function getsMsg(userId) {
  * @apiExample {js} Example usage:
  *   var patientId = <patientId>
  *   var body = {death: <death_value>}
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/admin/patients/'+patientId,body)
+ *   this.http.post('https://ayudamosvalencia.com/api/admin/patients/'+patientId,body)
  *    .subscribe( (res : any) => {
  *      console.log('Set value of dead for patient ok');
  *     }, (err) => {
@@ -299,7 +299,7 @@ function setDeadPatient (req, res){
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/admin/users/subgroup/ Set subgroup user
+ * @api {post} https://ayudamosvalencia.com/api/admin/users/subgroup/ Set subgroup user
  * @apiPrivate
  * @apiName setSubgroupUser
  * @apiDescription This method set the value of subgroup for a user.
@@ -308,7 +308,7 @@ function setDeadPatient (req, res){
  * @apiExample {js} Example usage:
  *   var userId = <userId>
  *   var body = {subgroup: <subgroup_value>}
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/admin/users/subgroup/'+userId,body)
+ *   this.http.post('https://ayudamosvalencia.com/api/admin/users/subgroup/'+userId,body)
  *    .subscribe( (res : any) => {
  *      console.log('Set value of subgroup for user ok');
  *     }, (err) => {
@@ -341,7 +341,7 @@ function setSubgroupUser (req, res){
 }
 
 /**
- * @api {post} https://virtualhubukraine.azurewebsites.net/api/admin/users/state/ Set blockedaccount state for a user
+ * @api {post} https://ayudamosvalencia.com/api/admin/users/state/ Set blockedaccount state for a user
  * @apiPrivate
  * @apiName setStateUser
  * @apiDescription This method set the value of blockedaccount state for a user.
@@ -350,7 +350,7 @@ function setSubgroupUser (req, res){
  * @apiExample {js} Example usage:
  *   var userId = <userId>
  *   var body = {blockedaccount: <blockedaccount_value>}
- *   this.http.post('https://virtualhubukraine.azurewebsites.net/api/admin/users/state/'+userId,body)
+ *   this.http.post('https://ayudamosvalencia.com/api/admin/users/state/'+userId,body)
  *    .subscribe( (res : any) => {
  *      console.log('Set value of blockedaccount state for a user ok');
  *     }, (err) => {
