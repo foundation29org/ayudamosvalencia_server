@@ -5,14 +5,6 @@ const createNeed = async (req, res) => {
         // Extraer los datos del body de la petición
         const { needs, otherNeeds, location, timestamp } = req.body;
 
-        // Validar que los datos requeridos estén presentes
-        if (!needs || !location || !location.lat || !location.lng) {
-            return res.status(400).json({
-                success: false,
-                message: 'Faltan datos requeridos'
-            });
-        }
-
         // Crear nueva instancia del modelo
         const newNeed = new Need({
             needs,
