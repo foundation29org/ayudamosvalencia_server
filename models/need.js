@@ -22,6 +22,10 @@ const needSchema = new Schema({
       required: true
     }
   },
+  status: {
+    type: String,
+    default: 'new'
+  },
   timestamp: {
     type: Date,
     default: Date.now
