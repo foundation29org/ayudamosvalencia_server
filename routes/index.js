@@ -21,13 +21,30 @@ const whitelist = config.allowedOrigins;
 function corsWithOptions(req, res, next) {
   const corsOptions = {
     origin: function (origin, callback) {
-      console.log(origin);
+      console.log('Origin:', origin);
+      console.log('Host:', req.headers.host);
+      
+      // Verificar que el host es el esperado
+      if (!req.headers.host || !req.headers.host.includes('ayudamosvalencia.com')) {
+        callback(new Error('Invalid host'));
+        return;
+      }
+
+      // Si es same-origin (Sec-Fetch-Site: same-origin)
+      if (req.headers['sec-fetch-site'] === 'same-origin') {
+        callback(null, true);
+        return;
+      }
+      
+      // Para peticiones cross-origin, verificar whitelist
       if (whitelist.includes(origin)) {
         callback(null, true);
       } else {
+        console.log('CORS error - Origin not allowed:', origin);
         callback(new Error('Not allowed by CORS'));
       }
     },
+    credentials: true
   };
 
   cors(corsOptions)(req, res, next);
