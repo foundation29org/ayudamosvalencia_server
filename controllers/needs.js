@@ -76,6 +76,7 @@ const getAllNeedsForHeatmap = async (req, res) => {
             location: need.location,
             timestamp: need.timestamp,
             _id: need._id,
+            status: need.status,
             otherNeeds: need.otherNeeds ? '[Contenido privado]' : ''
         }));
 
@@ -95,8 +96,83 @@ const getAllNeedsForHeatmap = async (req, res) => {
     }
 };
 
+const deleteNeed = async (req, res) => {
+    try {
+        const { needId } = req.params;
+
+        if (!needId) {
+            return res.status(400).json({
+                success: false,
+                message: 'ID de necesidad no proporcionado'
+            });
+        }
+
+        const deletedNeed = await Need.findByIdAndRemove(needId);
+
+        if (!deletedNeed) {
+            return res.status(404).json({
+                success: false,
+                message: 'Necesidad no encontrada'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Necesidad eliminada correctamente'
+        });
+
+    } catch (error) {
+        console.error('Error al eliminar necesidad:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al eliminar la necesidad',
+            error: error.message
+        });
+    }
+};
+
+//change status
+const updateStatus = async (req, res) => {
+    try {
+        const { needId } = req.params;
+        const { status } = req.body;
+
+        if (!needId || !status) {
+            return res.status(400).json({
+                success: false,
+                message: 'ID de necesidad y/o estado no proporcionado'
+            });
+        }
+
+        const updatedNeed = await Need.findByIdAndUpdate(needId, { status }, { new: true });
+
+        if (!updatedNeed) {
+            return res.status(404).json({
+                success: false,
+                message: 'Necesidad no encontrada'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: updatedNeed,
+            message: 'Estado actualizado correctamente'
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar estado de necesidad:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al actualizar el estado de la necesidad',
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     createNeed,
     getAllNeedsComplete,
-    getAllNeedsForHeatmap
+    getAllNeedsForHeatmap,
+    deleteNeed,
+    updateStatus
 }; 
