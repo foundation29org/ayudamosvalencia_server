@@ -6,6 +6,13 @@ const { conndbaccounts } = require('../db_connect')
 const needSchema = new Schema({
   needs: {
     type: [String],
+    validate: {
+      validator: function(needs) {
+          const validNeeds = ['electricity', 'water', 'sumwater', 'food', 'alojamiento', 'ropa'];
+          return needs.every(need => validNeeds.includes(need));
+      },
+      message: props => `${props.value} contiene necesidades no válidas`
+    },
     required: false
   },
   otherNeeds: {
