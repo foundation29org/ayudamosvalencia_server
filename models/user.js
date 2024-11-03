@@ -28,8 +28,11 @@ const UserSchema = Schema({
 		required: 'Email address is required',
 		match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	},
-	password: { type: String, select: false, required: true, minlength: [8, 'Password too short'] },
-	role: { type: String, required: true, enum: ['User', 'Clinical', 'Admin'], default: 'User' },
+	password: { type: String, select: false, required: false, minlength: [8, 'Password too short'] },
+	role: { type: String, required: true, enum: ['Admin'], default: 'Admin' },
+	position: { type: String, default: '' },
+	institution: { type: String, default: '' },
+	dateTimeLogin: Date,
 	subrole: String,
 	group: { type: String, required: true, default: 'None' },
 	confirmed: { type: Boolean, default: false },
@@ -123,10 +126,9 @@ var reasons = UserSchema.statics.failedLogin = {
 	WRONG_PLATFORM: 5
 };
 
-UserSchema.statics.getAuthenticated = function (email, password, cb) {
+UserSchema.statics.getAuthenticated = function (email, cb) {
 	this.findOne({ email: email }, function (err, user) {
 		if (err) return cb(err);
-
 		// make sure the user exists
 		if (!user) {
 			return cb(null, null, reasons.NOT_FOUND);
@@ -147,85 +149,27 @@ UserSchema.statics.getAuthenticated = function (email, password, cb) {
 			});
 		}
 
-		// test for a matching password
-		user.comparePassword(password, function (err, isMatch) {
-			if (err) return cb(err);
-
-
-			// check if the password was a match
-			if (isMatch) {
-				// if there's no lock or failed attempts, just return the user
-				if (!user.loginAttempts && !user.lockUntil) {
-					var updates = {
-						$set: { lastLogin: Date.now() }
-					};
-					return user.update(updates, function (err) {
-						if (err) return cb(err);
-						return cb(null, user);
-					});
-					return cb(null, user)
-				}
-				// reset attempts and lock info
-				var updates = {
-					$set: { loginAttempts: 0, lastLogin: Date.now() },
-					$unset: { lockUntil: 1 }
-				};
-				return user.update(updates, function (err) {
-					if (err) return cb(err);
-					return cb(null, user);
-				});
-			}
-
-			// password is incorrect, so increment login attempts before responding
-			user.incLoginAttempts(function (err) {
+		if (!user.loginAttempts && !user.lockUntil) {
+			var updates = {
+				$set: { lastLogin: Date.now() }
+			};
+			return user.update(updates, function (err) {
 				if (err) return cb(err);
-				return cb(null, null, reasons.PASSWORD_INCORRECT);
+				return cb(null, user);
 			});
+			return cb(null, user)
+		}
+		// reset attempts and lock info
+		var updates = {
+			$set: { loginAttempts: 0, lastLogin: Date.now() },
+			$unset: { lockUntil: 1 }
+		};
+		return user.update(updates, function (err) {
+			if (err) return cb(err);
+			return cb(null, user);
 		});
-	}).select('_id email +password loginAttempts lockUntil confirmed lastLogin role subrole userName lastName phone lang randomCodeRecoverPass dateTimeRecoverPass group blockedaccount permissions platform shared');
+	}).select('_id email loginAttempts lockUntil confirmed lastLogin role dateTimeLogin blockedaccount');
 };
-
-UserSchema.post('save', function (document) {
-	if(document !== null){
-		document.phone = crypt.decrypt(document.phone)
-		document.lastName = crypt.decrypt(document.lastName)
-		document.userName = crypt.decrypt(document.userName)
-	}
-});
-
-UserSchema.post('findOne', function (document) {
-	if(document !== null){
-		document.phone = crypt.decrypt(document.phone)
-		document.lastName = crypt.decrypt(document.lastName)
-		document.userName = crypt.decrypt(document.userName)
-	}
-});
-
-UserSchema.post('find', function (documents) {
-	if(documents !== null){
-		documents.forEach(function(document) {
-			document.phone = crypt.decrypt(document.phone)
-			document.lastName = crypt.decrypt(document.lastName)
-			document.userName = crypt.decrypt(document.userName)
-		});
-	}
-});
-
-UserSchema.post('findById', function (document) {
-	if(document !== null){
-		document.phone = crypt.decrypt(document.phone)
-		document.lastName = crypt.decrypt(document.lastName)
-		document.userName = crypt.decrypt(document.userName)
-	}
-});
-
-UserSchema.post('findByIdAndUpdate', function (document) {
-	if(document !== null){
-		document.phone = crypt.decrypt(document.phone)
-		document.lastName = crypt.decrypt(document.lastName)
-		document.userName = crypt.decrypt(document.userName)
-	}
-});
 
 module.exports = conndbaccounts.model('User', UserSchema)
 // we need to export the model so that it is accessible in the rest of the app

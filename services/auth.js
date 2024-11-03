@@ -49,6 +49,14 @@ function decodeToken(token, roles){
 									message: 'Token expired'
 								})
 							}
+
+							if (!user.confirmed) {
+                                reject({
+                                    status: 403,
+                                    message: 'Cuenta desactivada'
+                                })
+                            }
+
 							//si el token es correcto, obtenemos el sub, que es el código del usuario
 							var subdecrypt= crypt.decrypt(payload.sub.toString());
 							resolve(subdecrypt)

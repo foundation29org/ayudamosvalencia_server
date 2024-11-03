@@ -7,131 +7,55 @@ const needsCtrl = require('../controllers/needs')
 const userCtrl = require('../controllers/all/user')
 const langCtrl = require('../controllers/all/lang')
 
-const patientCtrl = require('../controllers/user/patient')
-const deleteAccountCtrl = require('../controllers/user/delete')
-
-const superAdmninLangCtrl = require('../controllers/superadmin/lang')
-
-const f29apiv2serviceCtrl = require('../services/f29apiv2')
-const f29bioserviceCtrl = require('../services/f29bio')
-const f29azureserviceCtrl = require('../services/f29azure')
-
-const supportCtrl = require('../controllers/all/support')
-
-const groupCtrl = require('../controllers/all/group')
 const admninUsersCtrl = require('../controllers/admin/users')
-
-const requestCliCtrl = require('../controllers/user/request-clin')
 
 const auth = require('../middlewares/auth')
 const roles = require('../middlewares/roles')
 const api = express.Router()
+const cors = require('cors')
+const config = require('../config')
+
+const whitelist = config.allowedOrigins;
+
+
+function corsWithOptions(req, res, next) {
+  const corsOptions = {
+    origin: function (origin, callback) {
+      console.log(origin);
+      if (whitelist.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  };
+
+  cors(corsOptions)(req, res, next);
+}
 
 // user routes, using the controller user, this controller has methods
 //routes for login-logout
 
-api.post('/needs', needsCtrl.createNeed)
-api.get('/needs', auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsForHeatmap)
-api.get('/needs/complete',auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsComplete)
+api.post('/needs', corsWithOptions, needsCtrl.createNeed)
+api.get('/needs', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsForHeatmap)
+api.get('/needs/complete', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsComplete)
+api.delete('/needs/:needId', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.deleteNeed)
+//update status
+api.put('/needs/status/:needId', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.updateStatus)
 
-api.post('/signup', userCtrl.signUp)
-api.post('/signin', userCtrl.signIn)
+api.post('/login', corsWithOptions, userCtrl.login)
+api.post('/checkLogin', corsWithOptions, userCtrl.checkLogin)
 
-// activarcuenta
-api.post('/activateuser', userCtrl.activateUser)
-api.post('/sendEmail', userCtrl.sendEmail)
+api.post('/signup', corsWithOptions, userCtrl.signUp)
 
-// recuperar password
-api.post('/recoverpass', userCtrl.recoverPass)
-api.post('/updatepass', userCtrl.updatePass)
-api.post('/newpass', auth(roles.All), userCtrl.newPass)
-
-api.get('/users/:userId', auth(roles.All), userCtrl.getUser)
-api.get('/users/settings/:userId', auth(roles.All), userCtrl.getSettings)
-api.put('/users/:userId', auth(roles.AllLessResearcher), userCtrl.updateUser)
-api.delete('/users/:userId', auth(roles.AllLessResearcher), userCtrl.deleteUser)//de momento no se usa
-api.get('/users/name/:userId', auth(roles.All), userCtrl.getUserName)
-api.get('/users/email/:userId', auth(roles.All), userCtrl.getUserEmail)
-api.get('/patient/email/:patientId', auth(roles.All), userCtrl.getPatientEmail)
-api.get('/verified/:userId', auth(roles.All), userCtrl.isVerified)
-api.put('/users/changeiscaregiver/:userId', auth(roles.AllLessResearcher), userCtrl.changeiscaregiver)
-api.put('/users/location/:userId', auth(roles.AllLessResearcher), userCtrl.setPosition)
-
-//delete account
-api.post('/deleteaccount/:userId', auth(roles.All), deleteAccountCtrl.deleteAccount)
-
-// patient routes, using the controller patient, this controller has methods
-api.get('/patients-all/:userId', auth(roles.All), patientCtrl.getPatientsUser)
-api.get('/patients/:patientId', auth(roles.All), patientCtrl.getPatient)
-api.put('/patients/:patientId', auth(roles.UserClinical), patientCtrl.updatePatient)
-api.put('/patients/changenotes/:patientId', auth(roles.AllLessResearcher), patientCtrl.changenotes)
-api.get('/patient/status/:patientId', auth(roles.AdminSuperAdmin), patientCtrl.getStatus)
-api.put('/patient/status/:patientId', auth(roles.AdminSuperAdmin), patientCtrl.setStatus)
-api.put('/patient/checks/:patientId', auth(roles.All), patientCtrl.setChecks)
-api.get('/patient/checks/:patientId', auth(roles.All), patientCtrl.getChecks)
-api.put('/patient/drugs/:patientId', auth(roles.All), patientCtrl.saveDrugs)
-api.post('/patient/deletedrug/:patientId', auth(roles.All), patientCtrl.deleteDrug)
-
-
-//superadmin routes, using the controllers of folder Admin, this controller has methods
-api.post('/superadmin/lang/:userId', auth(roles.SuperAdmin), superAdmninLangCtrl.updateLangFile)
-///no se usa las 2 siguientes
-//api.put('/superadmin/langs/:userId', auth, superAdmninLangCtrl.langsToUpdate)
-//api.put('/admin/lang/:userId', auth, superAdmninLangCtrl.addlang)
-api.put('/superadmin/lang/:userId', auth(roles.SuperAdmin), function(req, res){
-  req.setTimeout(0) // no timeout
-  superAdmninLangCtrl.addlang(req, res)
-})
-api.delete('/superadmin/lang/:userIdAndLang', auth(roles.SuperAdmin), superAdmninLangCtrl.deletelang)
+api.post('/activateuser/:userId', corsWithOptions, auth(roles.SuperAdmin), userCtrl.activateUser)
+api.post('/deactivateuser/:userId', corsWithOptions, auth(roles.SuperAdmin), userCtrl.deactivateUser)
 
 // lang routes, using the controller lang, this controller has methods
-api.get('/langs/',  langCtrl.getLangs)
+api.get('/langs/', langCtrl.getLangs)
 
 
-//Support
-api.post('/support/', auth(roles.UserClinicalSuperAdmin), supportCtrl.sendMsgSupport)
-api.post('/homesupport/', supportCtrl.sendMsgLogoutSupport)
-
-api.get('/support/:userId', auth(roles.UserClinicalSuperAdmin), supportCtrl.getUserMsgs)
-api.put('/support/:supportId', auth(roles.AdminSuperAdmin), supportCtrl.updateMsg)
-api.get('/support/all/:userId', auth(roles.SuperAdmin), supportCtrl.getAllMsgs)
-api.post('/support/all/:userId', auth(roles.AdminSuperAdmin), supportCtrl.getAllMsgs)
-
-//services dx29V2API
-api.post('/callTextAnalytics', f29apiv2serviceCtrl.callTextAnalytics)
-
-//services f29bio
-api.post('/Translation/document/translate2', f29bioserviceCtrl.getTranslationDictionary2)
-
-//services f29azure
-api.post('/getDetectLanguage', auth(roles.All), f29azureserviceCtrl.getDetectLanguage)
-
-//groups
-api.get('/groupsnames', groupCtrl.getGroupsNames)
-api.get('/groupadmin/:groupName', groupCtrl.getGroupAdmin)
-api.get('/groups', groupCtrl.getGroups)
-api.get('/group/:groupName', auth(roles.All), groupCtrl.getGroup)
-api.get('/group/notifications/:userId', auth(roles.Admin), groupCtrl.getNotifications)
-api.put('/group/notifications/:userId', auth(roles.Admin), groupCtrl.setNotifications)
-
-
-api.get('/admin/users/:groupName', auth(roles.Readers), admninUsersCtrl.getUsers)
-api.get('/admin/allusers', auth(roles.AdminSuperAdmin), admninUsersCtrl.getAllUsers)
-api.get('/admin/notactivedusers', auth(roles.AdminSuperAdmin), admninUsersCtrl.notactivedusers)
-api.put('/admin/patients/:patientId', auth(roles.Admin), admninUsersCtrl.setDeadPatient)
-api.put('/admin/users/subgroup/:userId', auth(roles.Admin), admninUsersCtrl.setSubgroupUser)
-api.put('/admin/users/state/:userId', auth(roles.Admin), admninUsersCtrl.setStateUser)
-
-api.get('/requestclin/:userId', auth(roles.AdminClinical), requestCliCtrl.getRequests)
-api.post('/requestclin/:userId', auth(roles.AdminClinical), requestCliCtrl.saveRequest)
-api.put('/requestclin/:requestId', auth(roles.AdminClinical), requestCliCtrl.updateRequest)
-api.delete('/requestclin/:requestId', auth(roles.AdminClinical), requestCliCtrl.deleteRequest)
-api.put('/requestclin/checks/:userId', auth(roles.All), userCtrl.setChecks)
-api.get('/requestclin/checks/:userId', auth(roles.All), userCtrl.getChecks)
-api.put('/requestclin/status/:requestId', auth(roles.AdminSuperAdmin), requestCliCtrl.setStatus)
-api.put('/requestclin/changenotes/:requestId', auth(roles.AllLessResearcher), requestCliCtrl.changenotes)
-api.get('/requestclin/group/:userId', auth(roles.AdminClinical), requestCliCtrl.getGroupRequest)
-api.post('/requestclin/deletedrug/:requestId', auth(roles.AdminClinical), requestCliCtrl.deleteDrug)
+api.get('/admin/allusers', corsWithOptions, auth(roles.AdminSuperAdmin), admninUsersCtrl.getAllUsers)
 
 /*api.get('/testToken', auth, (req, res) => {
 	res.status(200).send(true)

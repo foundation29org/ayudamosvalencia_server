@@ -4,10 +4,6 @@
 
 // add the lang model
 const Lang = require('../../models/lang')
-const User = require('../../models/user')
-const crypt = require('../../services/crypt')
-const RequestClin = require('../../models/request-clin')
-const Patient = require('../../models/patient')
 
 /**
  * @api {get} https://ayudamosvalencia.com/api/langs/ Get languages
