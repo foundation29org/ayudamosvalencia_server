@@ -19,49 +19,24 @@ const whitelist = config.allowedOrigins;
 
 
 function corsWithOptions(req, res, next) {
-  const whitelist = config.allowedOrigins;
-  
   const corsOptions = {
-      origin: function (origin, callback) {
-          console.log('Request origin:', origin);
-          
-          // Permitir requests sin origin en desarrollo
-          if (!origin) {
-              if (process.env.NODE_ENV === 'development') {
-                  return callback(null, true);
-              }
-              // En producción, verificar el referer
-              const referer = req.headers.referer;
-              if (referer) {
-                  const refererOrigin = new URL(referer).origin;
-                  if (whitelist.includes(refererOrigin)) {
-                      return callback(null, true);
-                  }
-              }
-          }
-
-          // Verificar si el origin está en la whitelist
-          if (whitelist.some(allowed => origin === allowed || origin.startsWith(allowed))) {
-              callback(null, true);
-          } else {
-              console.log('Origin not allowed:', origin);
-              callback(new Error('Not allowed by CORS'));
-          }
-      },
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin', 'Accept', 'Accept-Language', 'Origin', 'User-Agent'],
-      credentials: true,
-      optionsSuccessStatus: 200
+    origin: function (origin, callback) {
+      console.log(origin);
+      if (whitelist.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   };
 
-  // Aplicar configuración CORS
   cors(corsOptions)(req, res, next);
 }
 
 // user routes, using the controller user, this controller has methods
 //routes for login-logout
 
-api.post('/needs', corsWithOptions, needsCtrl.createNeed)
+api.post('/needs', needsCtrl.createNeed)
 api.get('/needs', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsForHeatmap)
 api.get('/needs/complete', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsComplete)
 api.delete('/needs/:needId', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.deleteNeed)
