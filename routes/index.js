@@ -53,7 +53,7 @@ function corsWithOptions(req, res, next) {
 // user routes, using the controller user, this controller has methods
 //routes for login-logout
 
-api.post('/needs', needsCtrl.createNeed)
+api.post('/needs', corsWithOptions, needsCtrl.createNeed)
 api.get('/needs', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsForHeatmap)
 api.get('/needs/complete', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.getAllNeedsComplete)
 api.delete('/needs/:needId', corsWithOptions, auth(roles.AdminSuperAdmin), needsCtrl.deleteNeed)
