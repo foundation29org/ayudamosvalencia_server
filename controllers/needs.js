@@ -1,4 +1,12 @@
 const Need = require('../models/need');
+const needsList = [
+    'electricity',
+    'water',
+    'sumwater',
+    'food',
+    'alojamiento',
+    'ropa'
+];
 
 const createNeed = async (req, res) => {
     try {
@@ -12,6 +20,17 @@ const createNeed = async (req, res) => {
             });
         }
 
+        // Validar que todos los needs sean válidos
+        if (needs && Array.isArray(needs)) {
+            const invalidNeeds = needs.filter(need => !needsList.includes(need));
+            if (invalidNeeds.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Necesidades no válidas: ' + invalidNeeds.join(', ')
+                });
+            }
+        }
+        console.log('entra')
 
         // Crear nueva instancia del modelo
         const newNeed = new Need({
