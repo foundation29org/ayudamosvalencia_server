@@ -26,6 +26,7 @@ function corsWithOptions(req, res, next) {
       
       // Verificar que el host es el esperado
       const isValidHost = req.headers.host && (
+        req.headers.host === 'ayudamosvalencia.com' ||
         req.headers.host.includes('ayudamosvalencia.com') ||
         req.headers.host.includes('localhost:') ||  // Para desarrollo local
         req.headers.host.includes('127.0.0.1:')    // Alternativa localhost
