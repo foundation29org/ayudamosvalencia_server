@@ -25,7 +25,14 @@ function corsWithOptions(req, res, next) {
       console.log('Host:', req.headers.host);
       
       // Verificar que el host es el esperado
-      if (!req.headers.host || !req.headers.host.includes('ayudamosvalencia.com')) {
+      const isValidHost = req.headers.host && (
+        req.headers.host.includes('ayudamosvalencia.com') ||
+        req.headers.host.includes('localhost:') ||  // Para desarrollo local
+        req.headers.host.includes('127.0.0.1:')    // Alternativa localhost
+      );
+
+      if (!isValidHost) {
+        console.log('Invalid host:', req.headers.host);
         callback(new Error('Invalid host'));
         return;
       }
